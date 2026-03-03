@@ -1,0 +1,166 @@
+﻿<Window x:Class="WpfApp_Krasotka.Clients"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp_Krasotka"
+        mc:Ignorable="d"
+        Title="Управление клиентами" Height="500" Width="900">
+
+    <Grid Background="#FFF0F8FF">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Заголовок - исправлен для настоящего центрирования -->
+        <Label x:Name="l_tabC" Content="Клиенты" Grid.Row="0" Grid.ColumnSpan="2"
+       HorizontalAlignment="Center" VerticalAlignment="Center" 
+       Height="45" FontSize="24" FontWeight="Bold" 
+       Background="#FF1976D2" Foreground="White" Padding="20,5" 
+       Width="150" Margin="0,10,250,10"/>
+
+        <!-- Левая панель: кнопки управления и поиск -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" Margin="10,5,10,10">
+
+            <!-- Панель кнопок -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <Button x:Name="b_clientShowActive" Content="Показать активных" Height="35" Width="135" 
+                        FontSize="12" FontWeight="Bold" Click="b_clientShowActive_Click" 
+                        Background="#FF2196F3" Foreground="White" Margin="5,0"/>
+                <Button x:Name="b_clientShowInactive" Content="Показать неактивных" Height="35" Width="156" 
+                        FontSize="12" FontWeight="Bold" Click="b_clientShowInactive_Click" 
+                        Background="#FF78909C" Foreground="White" Margin="5,0"/>
+                <Button x:Name="b_clientDelete" Content="Удалить" Height="35" Width="95" 
+                        FontSize="12" FontWeight="Bold" Background="#5695f6" 
+                        Foreground="White" Click="b_clientDelete_Click" Margin="5,0"/>
+                <Button x:Name="b_clientAdd" Content="Добавить клиента" Height="35" Width="143" 
+                        FontSize="12" FontWeight="Bold" Background="#5695f6" 
+                        Foreground="White" Click="b_clientAdd_Click" Margin="5,0"/>
+            </StackPanel>
+
+            <!-- Панель поиска -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="Поиск клиентов:" VerticalAlignment="Center" Margin="0,0,10,0" 
+                          FontSize="14" FontWeight="SemiBold"/>
+                <TextBox x:Name="searchTextBox" Width="443" Height="30" Padding="5" 
+                        TextChanged="searchTextBox_TextChanged" FontSize="14"
+                        VerticalContentAlignment="Center" Background="White"
+                        BorderBrush="#FF90CAF9" BorderThickness="1"/>
+                <Grid Width="100"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Таблица клиентов -->
+        <DataGrid x:Name="clientCell" Grid.Row="2" Grid.Column="0"
+          ItemsSource="{Binding ClientsClass}" ColumnWidth="*"
+          Margin="10,0,10,0" 
+          AutoGenerateColumns="False" SelectionMode="Single"
+          SelectionChanged="clientCell_SelectionChanged"
+          IsReadOnly="True">
+
+            <!-- Полный стиль для синего выделения -->
+            <DataGrid.Resources>
+                <!-- Синий цвет выделения -->
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2196F3"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#FFBBDEFB"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White"/>
+
+                <!-- Стиль для строк -->
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#FF2196F3"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="BorderBrush" Value="#FF1976D2"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FFE3F2FD"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+
+                <!-- Стиль для ячеек -->
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#FF2196F3"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="BorderBrush" Value="#FF1976D2"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Код клиента" Binding="{Binding ClientCode}" Width="80"/>
+                <DataGridTextColumn Header="Имя клиента" Binding="{Binding ClientName}" Width="*"/>
+                <DataGridTextColumn Header="Телефон" Binding="{Binding ClientTel}" Width="120"/>
+                <DataGridTextColumn Header="Активный" Binding="{Binding ClientsActivity}" Width="80"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Панель информации о клиенте -->
+        <Border Grid.RowSpan="3" Grid.Column="1" 
+                Background="#FFE3F2FD" Margin="10,10,10,10" 
+                BorderBrush="#FF1976D2" BorderThickness="2" 
+                CornerRadius="10" Padding="15">
+            <StackPanel>
+                <TextBlock Text="Информация о клиенте" FontSize="16" FontWeight="Bold" 
+                          HorizontalAlignment="Center" Margin="0,0,0,15" Foreground="#FF1976D2"/>
+
+                <TextBlock Text="Код клиента:" FontSize="14" FontWeight="SemiBold" Margin="0,5,0,2"/>
+                <TextBox x:Name="l_cc" FontSize="14" Height="30" Margin="0,0,0,10" 
+                        Background="White" Padding="5" BorderBrush="#FF90CAF9" BorderThickness="1" IsReadOnly="True"/>
+
+                <TextBlock Text="Имя клиента:" FontSize="14" FontWeight="SemiBold" Margin="0,5,0,2"/>
+                <TextBox x:Name="l_cn" FontSize="14" Height="30" Margin="0,0,0,10" 
+                        Background="White" Padding="5" BorderBrush="#FF90CAF9" BorderThickness="1" IsReadOnly="True"/>
+
+                <TextBlock Text="Телефон:" FontSize="14" FontWeight="SemiBold" Margin="0,5,0,2"/>
+                <TextBox x:Name="l_ct" FontSize="14" Height="30" Margin="0,0,0,10" 
+                        Background="White" Padding="5" BorderBrush="#FF90CAF9" BorderThickness="1" IsReadOnly="True"/>
+
+                <TextBlock Text="Активный:" FontSize="14" FontWeight="SemiBold" Margin="0,5,0,2"/>
+                <ComboBox x:Name="cb_activity" FontSize="14" Height="30" Margin="0,0,0,20" 
+                         Background="White" Padding="5" BorderBrush="#FF90CAF9" BorderThickness="1" IsEnabled="False">
+                    <ComboBoxItem Content="Да" IsSelected="True"/>
+                    <ComboBoxItem Content="Нет"/>
+                </ComboBox>
+
+                <Button x:Name="b_clientChange" Content="✏️ Изменить данные клиента" Height="40" 
+                        FontSize="14" FontWeight="Bold" Background="#FF2196F3" Foreground="White" 
+                        Click="b_clientChange_Click" Margin="0,10"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Строка статуса -->
+        <StatusBar Grid.Row="3" Grid.Column="0" Background="#FFE3F2FD" Height="25">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="statusText" Text="Готово." FontSize="12" Margin="10,0,0,0"/>
+                    <TextBlock x:Name="clientCountText" Text=" Клиентов: 0" FontSize="12" Margin="10,0,0,0"/>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+
+        <!-- Кнопка возврата - исправлено расположение -->
+        <Button x:Name="b_clientReturn" Content="Вернуться" Grid.Row="3" Grid.Column="1"
+                Height="35" Width="120" FontSize="14" FontWeight="Bold" 
+                Background="#FF78909C" Foreground="White" Click="b_clientReturn_Click"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Cursor="Hand"/>
+    </Grid>
+</Window>

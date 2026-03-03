@@ -1,0 +1,336 @@
+﻿<Window x:Class="WpfApp_Krasotka.Everyday"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Салон красоты - Основные возможности" Height="700" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#FFF0F8FF">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <Border Grid.Row="0" Background="#FF1976D2" Padding="20" Margin="10">
+            <TextBlock Text='Салон красоты "Красотка"' 
+                      FontSize="28" FontWeight="Bold" Foreground="White" 
+                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
+
+        <!-- Основной контент -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="20">
+            <StackPanel>
+                <!-- Быстрая запись -->
+                <Border Background="#FFE3F2FD" BorderBrush="#FF1976D2" BorderThickness="2" 
+                        CornerRadius="10" Margin="0,0,0,20" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="🚀 Быстрая запись на услугу" 
+                                  FontSize="18" FontWeight="Bold" Foreground="#FF1976D2"
+                                  Margin="0,0,0,15"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <ComboBox x:Name="cb_quickService" Width="200" Height="35"
+                                     FontSize="14" Padding="5" Margin="0,0,10,0"
+                                     DisplayMemberPath="ServName"/>
+                            <Button x:Name="b_quickBook" Content="Записаться" 
+                                   Width="120" Height="35" FontSize="14" FontWeight="Bold"
+                                   Background="#FF2196F3" Foreground="White"
+                                   Click="b_quickBook_Click"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Или выберите из каталога:" 
+                                  FontSize="14" FontWeight="SemiBold" Margin="0,10,0,5"/>
+
+                        <Button x:Name="b_fullCatalog" Content="📋 Полный каталог услуг" 
+                               Height="40" FontSize="14" FontWeight="Bold"
+                               Background="#FF4CAF50" Foreground="White" 
+                               Click="b_fullCatalog_Click" Margin="0,5"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Каталог услуг -->
+                <Border Background="#FFE3F2FD" BorderBrush="#FF1976D2" BorderThickness="2" 
+                        CornerRadius="10" Margin="0,0,0,20" Padding="20">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="💅 Наши услуги" 
+                                      FontSize="18" FontWeight="Bold" Foreground="#FF1976D2"
+                                      Margin="0,0,10,15"/>
+                            <Button x:Name="b_addService" Content="➕" 
+                                   Width="25" Height="25" FontSize="14" FontWeight="Bold"
+                                   Background="#5695f6" Foreground="White"
+                                   Click="b_addService_Click"
+                                   ToolTip="Добавить новую услугу" Margin="0,0,0,9"/>
+                        </StackPanel>
+
+                        <ItemsControl x:Name="ic_services" ItemsSource="{Binding Services}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="White" BorderBrush="#FF90CAF9" BorderThickness="1"
+                                            CornerRadius="5" Margin="0,0,0,5" Padding="10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Text="{Binding ServName}" 
+                                                      FontSize="14" FontWeight="SemiBold"
+                                                      VerticalAlignment="Center"/>
+
+                                            <TextBlock Grid.Column="1" Text="{Binding ServPrice, StringFormat={}{0}₽}" 
+                                                      FontSize="14" FontWeight="Bold" Foreground="#FF1976D2"
+                                                      Margin="10,0" VerticalAlignment="Center"/>
+
+                                            <TextBlock Grid.Column="2" Text="{Binding ServDuration, StringFormat={}{0} ч}" 
+                                                      FontSize="12" Foreground="#666"
+                                                      VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Button x:Name="b_viewAllServices" Content="Посмотреть все услуги" 
+                               Height="35" FontSize="14" Margin="0,10,0,0"
+                               Background="Transparent" BorderBrush="#FF2196F3" BorderThickness="1"
+                               Foreground="#FF2196F3" Click="b_viewAllServices_Click"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Наши мастера с раскрывающимся списком -->
+                <Border Background="#FFE3F2FD" BorderBrush="#FF1976D2" BorderThickness="2" 
+                        CornerRadius="10" Margin="0,0,0,20" Padding="20">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="👩‍💼 Наши мастера и их клиенты" 
+                                      FontSize="18" FontWeight="Bold" Foreground="#FF1976D2"
+                                      Margin="0,0,10,15"/>
+                            <Button x:Name="b_addMaster" Content="➕" 
+                                   Width="25" Height="25" FontSize="14" FontWeight="Bold"
+                                   Background="#5695f6" Foreground="White"
+                                   Click="b_addMaster_Click"
+                                   ToolTip="Добавить нового мастера" Margin="0,0,0,9"/>
+                            <Button x:Name="b_searchClient" Content="🔍" 
+                                    Width="25" Height="25" FontSize="14" FontWeight="Bold"
+                                    Background="#5695f6" Foreground="White"
+                                    Click="b_searchClient_Click"
+                                    ToolTip="Поиск клиента" Margin="5,0,5,9"/>
+                        </StackPanel>
+
+                        <ItemsControl x:Name="ic_masters" ItemsSource="{Binding Masters}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="White" BorderBrush="#FF90CAF9" BorderThickness="1"
+                                            CornerRadius="5" Margin="0,0,0,8" Padding="0">
+                                        <StackPanel>
+                                            <!-- Заголовок мастера -->
+                                            <Button x:Name="btnToggleMaster" 
+                                                   Background="Transparent" 
+                                                   BorderThickness="0"
+                                                   Padding="15,10"
+                                                   Click="ToggleMasterClients">
+                                                <Button.Content>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                                            <TextBlock Text="{Binding MasterName}" 
+                                                                      FontSize="14" FontWeight="SemiBold"
+                                                                      VerticalAlignment="Center"/>
+                                                            <TextBlock Text=" • " 
+                                                                      FontSize="12" Foreground="#666"
+                                                                      VerticalAlignment="Center"/>
+                                                            <TextBlock Text="{Binding ServTypeName}" 
+                                                                      FontSize="12" Foreground="#666"
+                                                                      VerticalAlignment="Center"/>
+                                                        </StackPanel>
+
+                                                        <TextBlock Grid.Column="1" Text="{Binding MasterTel}" 
+                                                                  FontSize="12" Foreground="#2196F3"
+                                                                  VerticalAlignment="Center" Margin="10,0"/>
+
+                                                        <TextBlock x:Name="txtClientsCount" Grid.Column="2"
+                                                                  Text="{Binding ClientsCount, StringFormat={}{0} клиентов}"
+                                                                  FontSize="11" Foreground="#888"
+                                                                  VerticalAlignment="Center" Margin="10,0"/>
+
+                                                        <TextBlock x:Name="txtArrow" Grid.Column="3" Text="▼"
+                                                                  FontSize="12" Foreground="#1976D2"
+                                                                  VerticalAlignment="Center" Margin="5,0"/>
+                                                    </Grid>
+                                                </Button.Content>
+                                            </Button>
+
+                                            <!-- Список клиентов (скрыт по умолчанию) -->
+                                            <StackPanel x:Name="pnlClients" Visibility="Collapsed" Margin="15,0,15,10">
+                                                <Border Background="#F8F9FA" CornerRadius="3" Padding="10">
+                                                    <StackPanel>
+                                                        <TextBlock Text="📋 Клиенты мастера:" 
+                                                                  FontSize="12" FontWeight="Bold" 
+                                                                  Foreground="#555" Margin="0,0,0,8"/>
+
+                                                        <ItemsControl x:Name="icClientsList" 
+                                                                     ItemsSource="{Binding MasterClients}">
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Border Background="White" BorderBrush="#E0E0E0" 
+                                                                            BorderThickness="1" CornerRadius="3" 
+                                                                            Margin="0,0,0,5" Padding="8">
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                <ColumnDefinition Width="Auto"/>
+                                                                            </Grid.ColumnDefinitions>
+
+                                                                            <StackPanel Grid.Column="0">
+                                                                                <TextBlock Text="{Binding ClientName}" 
+                                                                                          FontSize="12" FontWeight="SemiBold"/>
+                                                                                <TextBlock Text="{Binding ClientTel}" 
+                                                                                          FontSize="11" Foreground="#666"/>
+                                                                                <TextBlock Text="{Binding ServiceName}" 
+                                                                                          FontSize="11" Foreground="#1976D2"
+                                                                                          FontStyle="Italic"/>
+                                                                                <TextBlock Text="{Binding AppointmentDate, StringFormat={}Записан: {0:dd.MM.yyyy}}" 
+                                                                                          FontSize="10" Foreground="#888"/>
+                                                                            </StackPanel>
+
+                                                                            <Button Grid.Column="1" Content="📞" 
+                                                                                   Width="30" Height="30" FontSize="12"
+                                                                                   Background="#4CAF50" Foreground="White"
+                                                                                   Margin="10,0,5,0"
+                                                                                   Click="CallClient_Click"
+                                                                                   Tag="{Binding ClientTel}"
+                                                                                   ToolTip="Позвонить клиенту"/>
+
+                                                                            <Button Grid.Column="2" Content="📝" 
+                                                                                   Width="30" Height="30" FontSize="12"
+                                                                                   Background="#2196F3" Foreground="White"
+                                                                                   Click="CreateAppointmentForClient_Click"
+                                                                                   Tag="{Binding}"
+                                                                                   ToolTip="Создать новую запись"/>
+                                                                        </Grid>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+
+                                                        <TextBlock x:Name="txtNoClients" Text="У мастера пока нет клиентов" 
+                                                                  FontSize="11" Foreground="#999" FontStyle="Italic"
+                                                                  HorizontalAlignment="Center" Margin="0,5"
+                                                                  Visibility="Collapsed"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Button x:Name="b_viewAllMasters" Content="Все мастера" 
+                               Height="35" FontSize="14" Margin="0,10,0,0"
+                               Background="Transparent" BorderBrush="#FF2196F3" BorderThickness="1"
+                               Foreground="#FF2196F3" Click="b_viewAllMasters_Click"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Акции -->
+                <Border Background="#FFFDE7" BorderBrush="#FFC107" BorderThickness="2" 
+                        CornerRadius="10" Margin="0,0,0,20" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="🎁 Акции и скидки" 
+                                  FontSize="18" FontWeight="Bold" Foreground="#FF9800"
+                                  Margin="0,0,0,10"/>
+
+                        <StackPanel>
+                            <TextBlock Text="• Скидка 20% на первое посещение" 
+                                      FontSize="14" Margin="0,2"/>
+                            <TextBlock Text="• Комплекс 'Вечерний образ' со скидкой 15%" 
+                                      FontSize="14" Margin="0,2"/>
+                            <TextBlock Text="• Приведи подругу - получи скидку 10%" 
+                                      FontSize="14" Margin="0,2"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Контакты -->
+                <Border Background="#FFE3F2FD" BorderBrush="#FF1976D2" BorderThickness="2" 
+                        CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="📞 Контакты" 
+                                  FontSize="18" FontWeight="Bold" Foreground="#FF1976D2"
+                                  Margin="0,0,0,15"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="📍 Адрес:" FontWeight="SemiBold" Margin="0,2"/>
+                                <TextBlock Text="ул. Красивая, д. 123" FontSize="14" Margin="0,0,0,15"/>
+
+                                <TextBlock Text="📞 Телефон:" FontWeight="SemiBold" Margin="0,2"/>
+                                <TextBlock Text="+7 (999) 123-45-67" FontSize="14" Margin="0,0,0,15"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="🕒 График работы:" FontWeight="SemiBold" Margin="0,2"/>
+
+                                <Border BorderBrush="#FF90CAF9" BorderThickness="1" CornerRadius="5" 
+                                        Background="White" Margin="0,5,0,10">
+                                    <ListBox x:Name="lb_workHours" 
+                                             Background="Transparent" BorderThickness="0"
+                                             FontSize="14" Height="35"
+                                             ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}" Padding="10,5" 
+                                                           VerticalAlignment="Center" FontWeight="SemiBold"
+                                                           TextAlignment="Center"/>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Border>
+
+                                <Button x:Name="b_call" Content="📞 Позвонить в салон" 
+                                       Height="35" FontSize="13" FontWeight="SemiBold" Margin="0,5"
+                                       Background="#FF4CAF50" Foreground="White"
+                                       Click="b_call_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Нижняя панель -->
+        <Border Grid.Row="2" Background="#FFE3F2FD" Padding="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="b_admin" Content="⚙️ Администрирование" 
+                       Width="185" Height="35" FontSize="14" FontWeight="Bold"
+                       Background="#FF78909C" Foreground="White" 
+                       Click="b_admin_Click" Margin="5,0"/>
+
+                <Button x:Name="b_exit" Content="🚪 Выход" 
+                       Width="100" Height="35" FontSize="14" FontWeight="Bold"
+                       Background="#FF78909C" Foreground="White" 
+                       Click="b_exit_Click" Margin="5,0"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

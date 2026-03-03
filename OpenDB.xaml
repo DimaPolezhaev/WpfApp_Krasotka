@@ -1,0 +1,57 @@
+﻿<Window x:Class="WpfApp_Krasotka.OpenDB"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp_Krasotka"
+        mc:Ignorable="d"
+        Title="Салон красоты - Управление БД" Height="500" Width="800"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Background="#FFF8F9FA">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <Border Grid.Row="0" Background="#FF1976D2" Padding="25">
+            <TextBlock Text="Управление базой данных салона красоты" 
+                      HorizontalAlignment="Center" FontSize="18" FontWeight="SemiBold" 
+                      Foreground="White" TextAlignment="Center"/>
+        </Border>
+
+        <!-- Кнопки меню -->
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" Margin="80,30">
+            <Button x:Name="b_client" Content="Клиенты" Height="40" Margin="0,5"
+                    FontSize="14" FontWeight="Normal" Background="#FF2196F3" 
+                    Foreground="White" Click="b_client_Click" 
+                    BorderThickness="0" Cursor="Hand"/>
+
+            <Button x:Name="b_typeService" Content="Типы услуг" Height="40" Margin="0,5"
+                    FontSize="14" FontWeight="Normal" Background="#FF2196F3" 
+                    Foreground="White" BorderThickness="0" Cursor="Hand" Click="b_typeService_Click"/>
+
+            <Button x:Name="b_master" Content="Мастера" Height="40" Margin="0,5"
+                    FontSize="14" FontWeight="Normal" Background="#FF2196F3" 
+                    Foreground="White" BorderThickness="0" Cursor="Hand" Click="b_master_Click"/>
+
+            <Button x:Name="b_service" Content="Услуги" Height="40" Margin="0,5"
+                    FontSize="14" FontWeight="Normal" Background="#FF2196F3" 
+                    Foreground="White" BorderThickness="0" Cursor="Hand" Click="b_service_Click"/>
+
+            <Button x:Name="b_appoint" Content="Оказание услуги" Height="40" Margin="0,5"
+                    FontSize="14" FontWeight="Normal" Background="#FF2196F3" 
+                    Foreground="White" BorderThickness="0" Cursor="Hand" Click="b_appoint_Click"/>
+        </StackPanel>
+
+        <!-- Нижняя панель -->
+        <Border Grid.Row="2" Background="#FFEEEEEE" Padding="15">
+            <Button x:Name="b_returnO" Content="Вернуться" Height="34" Width="130"
+                    FontSize="13" FontWeight="Normal" Background="#FF78909C" 
+                    Foreground="White" Click="b_returnO_Click" 
+                    HorizontalAlignment="Center" BorderThickness="0" Cursor="Hand"/>
+        </Border>
+    </Grid>
+</Window>
